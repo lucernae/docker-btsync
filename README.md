@@ -45,12 +45,12 @@ docker build -t kartoza/btsync .
 To create a running container do:
 
 ```
-sudo docker run \
-	--name "mybtsync" \
-	-p 5556:5555 \
-	-e SECRET=1231412312 \
-	-e DEVICE=foo.bar.com \
-	-v <path to data>:/btsync \
+docker run --name "myname.kartoza.com" \
+	--restart=always \
+	--hostname="myname.kartoza.com" \
+	-e SECRET=123456 \
+	-e DEVICE=somedevice.kartoza.com \
+	-v /home/blah/yourshare:/btsync \
 	-d -t kartoza/btsync
 ```
 
@@ -61,11 +61,10 @@ user DEVICE name (it will show up as this in your docker sync lists) and SECRET
 * -e SECRET=<secret> 
 * -e DEVICE=<device name>
 
-You should also choose an available port (5556 in above example) that will be
-open on the server.
+We recommend that you share your storage directory as a volume mounted
+as /btsync into the container - this will allow you to destroy and
+recreate the container without losing you synced data.
 
-```
-
-### Tutorial ###
+# Tutorial
 
 More details are available in [this tutorial](http://blog.bittorrent.com/2013/10/22/sync-hacks-deploy-bittorrent-sync-with-docker/).
