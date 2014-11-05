@@ -17,6 +17,15 @@ groupadd -g $GROUP_ID qgis
 useradd --shell /bin/bash --uid $USER_ID --gid $GROUP_ID $USER_NAME
 #cp /tmp/btsync.conf /${USER_NAME}/btsync.conf
 #chown ${USER_NAME}.${USER_NAME} /${USER_NAME}/btsync.conf
+
+if [ -z "${SECRET}" ]; then
+    echo "Please set a btsync secret using docker -e SECRET=12321321"
+    exit 1
+fi
+
+echo "Setting secret to ${SECRET}"
+rpl "SECRET" "${SECRET}" /tmp/btsync.conf
+rpl "DEVICE" "${DEVICE}" /tmp/btsync.conf
 mkdir -p /btsync/.sync
 chown ${USER_NAME}.${USER_NAME} /btsync/.sync
 su $USER_NAME -c "btsync --config /tmp/btsync.conf --nodaemon"

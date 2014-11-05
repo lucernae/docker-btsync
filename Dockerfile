@@ -12,7 +12,7 @@ RUN dpkg-divert --local --rename --add /sbin/initctl
 ADD 71-apt-cacher-ng /etc/apt/apt.conf.d/71-apt-cacher-ng
 
 # Install curl
-RUN apt-get -y update && apt-get install -y curl
+RUN apt-get -y update && apt-get install -y curl rpl
 
 # Download and extract the executable to /usr/bin
 RUN curl -o /usr/bin/btsync.tar.gz http://download-lb.utorrent.com/endpoint/btsync/os/linux-x64/track/stable
