@@ -1,31 +1,71 @@
 BitTorrent Sync Dockerfile
 ==========================
 
-This will build a [docker](http://www.docker/) image that runs [BitTorrent Sync](http://labs.bittorrent.com/experiments/sync.html).
+This will build a [docker](http://www.docker/) image that runs [BitTorrent
+Sync](http://labs.bittorrent.com/experiments/sync.html).
+
+## Getting the image
+
+There are various ways to get the image onto your system:
 
 
-### Building the Image ###
+The preferred way (but using most bandwidth for the initial image) is to
+get our docker trusted build like this:
+
 
 ```
-docker build -t btsync .
+docker pull kartoza/btsync
 ```
 
-
-### Running BitTorrent Sync ###
+To build the image yourself without apt-cacher (also consumes more bandwidth
+since deb packages need to be refetched each time you build) do:
 
 ```
-docker run -d -p 8888:8888 -p 55555:55555 -v /srv/btsync/:/btsync/ btsync
+docker build -t kartoza/btsync git://github.com/kartoza/docker-btsync
 ```
 
-`-d` run in detached mode
+To build with apt-cache (and minimised download requirements) do you need to
+clone this repo locally first and modify the contents of 71-apt-cacher-ng to
+match your cacher host. Then build using a local url instead of directly from
+github.
 
-`-p` expose container port `[public-port]:[container-port]`
-> btsync.conf sets the container ports 8888 as the web ui and 55555 as the listening port
+```
+git clone git://github.com/kartoza/docker-btsync
+```
 
-> If you do not explicitly set a public port, a random open port will be used because the ports are exposed in the Dockerfile
+Now edit ``71-apt-cacher-ng`` then do:
 
-`-v` mount a local directory in the container `[host-dir]:[container-dir]`
-> btsync.conf should be located in a directory mounted to the container directory `/btsync/`
+```
+docker build -t kartoza/btsync .
+```
+
+## Run
+
+
+To create a running container do:
+
+```
+sudo docker run \
+	--name "mybtsync" \
+	-p 5556:5555 \
+	-e SECRET=1231412312 \
+	-e DEVICE=foo.bar.com \
+	-v <path to data>:/btsync \
+	-d -t kartoza/btsync
+```
+
+You should use the following environment variables to pass a 
+user DEVICE name (it will show up as this in your docker sync lists) and SECRET
+(use a read only secret normally). 
+
+* -e SECRET=<secret> 
+* -e DEVICE=<device name>
+
+You should also choose an available port (5556 in above example) that will be
+open on the server.
+
+```
 
 ### Tutorial ###
+
 More details are available in [this tutorial](http://blog.bittorrent.com/2013/10/22/sync-hacks-deploy-bittorrent-sync-with-docker/).
