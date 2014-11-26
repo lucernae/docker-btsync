@@ -50,7 +50,7 @@ docker run --name "myname.kartoza.com" \
 	--hostname="myname.kartoza.com" \
 	-e SECRET=123456 \
 	-e DEVICE=somedevice.kartoza.com \
-	-v /home/blah/yourshare:/btsync \
+	-v /home/blah/yourshare:/web \
 	-d -t kartoza/btsync
 ```
 
@@ -62,7 +62,7 @@ user DEVICE name (it will show up as this in your docker sync lists) and SECRET
 * -e DEVICE=<device name>
 
 We recommend that you share your storage directory as a volume mounted
-as /btsync into the container - this will allow you to destroy and
+as /web into the container - this will allow you to destroy and
 recreate the container without losing you synced data.
 
 # Tutorial
