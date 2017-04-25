@@ -28,4 +28,4 @@ rpl "SECRET" "${SECRET}" /tmp/btsync.conf
 rpl "DEVICE" "${DEVICE}" /tmp/btsync.conf
 mkdir -p /btsync/.sync
 chown ${USER_NAME}.${USER_NAME} /btsync/.sync
-su $USER_NAME -c "btsync --config /tmp/btsync.conf --nodaemon"
+su -s /bin/bash -c "btsync --config /tmp/btsync.conf --nodaemon" $USER_NAME
