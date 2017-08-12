@@ -20,6 +20,14 @@ useradd --shell /bin/bash --uid $USER_ID --gid $GROUP_ID $USER_NAME
 
 if [ -z "${SECRET}" ]; then
     echo "Please set a btsync secret using docker -e SECRET=12321321"
+
+	# Do not exit, if forced to standby
+    if [ "${STANDBY_MODE}" == "TRUE" ]; then
+    	# Hang the container so it keeps running.
+    	# Useful in rancher to keep the stack state healthy
+    	tail -f /dev/null
+    fi
+
     exit 1
 fi
 

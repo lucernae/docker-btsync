@@ -65,6 +65,11 @@ We recommend that you share your storage directory as a volume mounted
 as /web into the container - this will allow you to destroy and
 recreate the container without losing you synced data.
 
+Use this environment variable if you don't want to provide SECRET, but want
+to keep the container running (useful in rancher when SECRET is not provided).
+
+* -e STANDBY_MODE=TRUE
+
 # Tutorial
 
 More details are available in [this tutorial](http://blog.bittorrent.com/2013/10/22/sync-hacks-deploy-bittorrent-sync-with-docker/).
